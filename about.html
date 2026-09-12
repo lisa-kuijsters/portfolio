@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Lisa Kuijsters — CMD Avans Hogeschool</title>
+  <meta name="description" content="Meet Lisa Kuijsters, a Communication & Multimedia Design student at Avans Hogeschool Breda. Philosophy, creative toolkit, and design ethos.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="images/logo.png">
+</head>
+<body>
+
+  <!-- Ambient Cursor Glow -->
+  <div id="cursor-glow"></div>
+
+  <!-- Header Navigation -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo-link">
+        <img src="images/logo.png" alt="LK Monogram Logo" class="logo-img">
+        <div class="logo-meta">
+          <span class="logo-name">LISA K.</span>
+          <span class="logo-dept">CMD • AVANS HOGESCHOOL</span>
+        </div>
+      </a>
+
+      <nav class="desktop-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="archives.html" class="nav-link">Archives</a>
+        <a href="about.html" class="nav-link active">About</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+
+      <button class="mobile-menu-btn" aria-label="Toggle navigation menu">
+        <img src="images/icons/menu.png" alt="Menu Icon">
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-drawer">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="archives.html" class="nav-link">Archives</a>
+    <a href="about.html" class="nav-link active">About</a>
+    <a href="contact.html" class="nav-link">Contact</a>
+  </div>
+
+  <main style="padding-top: calc(var(--header-height) + 3rem); padding-bottom: 6rem;">
+    <div class="container">
+      
+      <!-- Back Navigation -->
+      <a href="index.html" class="back-link">
+        <img src="images/icons/leftArrow.png" alt="Back Arrow">
+        <span>Back to Living Galaxy</span>
+      </a>
+
+      <!-- Asymmetrical Editorial Layout -->
+      <div class="about-asymmetric-layout">
+        
+        <!-- Portrait Photo Column with me.jpg (Cloud Morphology) -->
+        <div>
+          <div class="about-portrait-card">
+            <img src="images/me.jpg" alt="Lisa Kuijsters portrait in Barcelona overlooking city skyline">
+          </div>
+        </div>
+
+        <!-- Bio & Editorial Content Column -->
+        <div>
+          <h1 class="editorial-hero-title" style="font-size: clamp(2.8rem, 5.5vw, 4.8rem); margin: 0 0 2rem 0;">
+            Lisa Kuijsters
+          </h1>
+
+          <p class="lead-text" style="margin-bottom: 1.8rem;">
+            Student Communication &amp; Multimedia Design at Avans Hogeschool in Breda.
+          </p>
+
+          <p style="margin-bottom: 1.8rem; font-size: 1.08rem; line-height: 1.8;">
+            I am fascinated by how design can change the way people view the world. My passion lies within the connection between nature, technology and humans.
+          </p>
+
+          <p style="margin-bottom: 1.8rem; font-size: 1.08rem; line-height: 1.8;">
+            I aim to create moments that evoke emotions and spark the imagination.
+          </p>
+
+          <p style="margin-bottom: 2.5rem; font-size: 1.08rem; line-height: 1.8;">
+            Working intuitively with an eye for the unseen details, I strive to bring a fresh perspective to every project I touch.
+          </p>
+
+          <!-- Action -->
+          <div style="display: flex; gap: 1.2rem; flex-wrap: wrap;">
+            <a href="contact.html" class="btn-editorial-outline">
+              <span>Get in Touch</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Clean Footer (Without duplicate menu) -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <a href="mailto:lisakuijsters2510@gmail.com" class="footer-email-link">
+          <svg class="email-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+          </svg>
+          <span>lisakuijsters2510@gmail.com</span>
+        </a>
+
+        <div class="footer-bottom-text">
+          <span>&copy; 2026 Lisa Kuijsters — Communication &amp; Multimedia Design • Avans Breda</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
