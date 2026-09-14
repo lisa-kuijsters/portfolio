@@ -3,7 +3,7 @@
    EDITORIAL ASYMMETRICAL DESIGN SYSTEM
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700&display=swap');
 
 :root {
   /* Color Palette from designSystem.jpg */
@@ -30,9 +30,9 @@
   --border-glow: rgba(161, 172, 240, 0.4);
   --border-solid: rgba(161, 172, 240, 0.22);
 
-  /* Typography: Adobe Fonts Komet (https://fonts.adobe.com/fonts/komet) */
-  --font-display: "komet", "Komet", "komet-pro", 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-sans: "komet", "Komet", "komet-pro", 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  /* Typography */
+  --font-display: 'Urbanist', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: 'Urbanist', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'SF Mono', 'Roboto Mono', Menlo, Consolas, monospace;
 
   --ease-editorial: cubic-bezier(0.19, 1, 0.22, 1);
@@ -70,18 +70,16 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Ambient Cursor Glow */
-#cursor-glow {
+/* Shooting-star cursor line effect */
+#cursor-line {
   position: fixed;
-  width: 450px;
-  height: 450px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(120, 133, 204, 0.1) 0%, rgba(161, 172, 240, 0.02) 50%, transparent 70%);
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.2), rgba(255,255,255,0.8));
   pointer-events: none;
-  transform: translate(-50%, -50%);
-  z-index: 1;
-  transition: opacity 0.3s ease;
-  will-change: transform;
+  transform-origin: left center;
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+  z-index: 9999;
 }
 
 /* --- Typography (Editorial & Bold) --- */
@@ -480,6 +478,61 @@ img {
   }
 }
 
+@keyframes liquidFrameFlow {
+  0%, 100% { background-position: 0 0, 0% 50%, 100% 50%; }
+  50% { background-position: 0 0, 100% 50%, 0% 50%; }
+}
+
+/* A moving layer of overlapping highlights makes the frame flow like liquid
+   metal instead of merely shifting a single gradient's colour. */
+@keyframes liquidMetalFlow {
+  0% { background-position: 0% 0%, 100% 15%, 30% 100%, 90% 85%, 15% 60%; transform: scale(1.06) rotate(0deg); }
+  25% { background-position: 80% 35%, 15% 95%, 90% 20%, 10% 5%, 65% 40%; transform: scale(1.14) rotate(1.5deg); }
+  50% { background-position: 20% 100%, 85% 20%, 10% 40%, 70% 0%, 100% 80%; transform: scale(1.08) rotate(-1deg); }
+  75% { background-position: 100% 70%, 30% 0%, 75% 100%, 0% 55%, 42% 10%; transform: scale(1.16) rotate(1deg); }
+  100% { background-position: 0% 0%, 100% 15%, 30% 100%, 90% 85%, 15% 60%; transform: scale(1.06) rotate(0deg); }
+}
+
+@supports (-webkit-mask-composite: xor) {
+  .node-preview-card,
+  .upcoming-card,
+  .about-portrait-card,
+  .asymmetric-guide-box {
+    isolation: isolate;
+    border: 5px solid transparent;
+    background-clip: padding-box;
+    animation: none;
+  }
+
+  /* Animated preview border disabled */
+
+  .upcoming-card::before { animation-duration: 10s; animation-delay: -3s; }
+  .about-portrait-card::before { animation-duration: 11s; animation-delay: -5s; }
+  .asymmetric-guide-box::before { animation-duration: 9s; animation-delay: -2s; }
+}
+
+/* WebGL canvas: transparent in the middle and visibly fluid only at the edge. */
+.node-preview-card.fluid-edge-host,
+.upcoming-card.fluid-edge-host,
+.about-portrait-card.fluid-edge-host,
+.asymmetric-guide-box.fluid-edge-host {
+  position: relative;
+  overflow: visible;
+  border: 0 !important;
+  animation: none !important;
+}
+
+.fluid-edge-canvas {
+  position: absolute;
+  inset: -24px;
+  width: calc(100% + 48px);
+  height: calc(100% + 48px);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.fluid-edge-host::before { display: none; }
+
 /* ==========================================================================
    CONSTELLATION SYSTEM & 4 STARBURST PROJECT BUTTONS (button.png)
    ========================================================================== */
@@ -507,7 +560,7 @@ img {
 }
 
 /* Placed across the Milky Way spiral with ample clearance */
-.star-node-1 { top: 28%; left: 68%; }
+.star-node-1 { top: 22%; left: 70%; }
 .star-node-2 { top: 48%; left: 88%; }
 .star-node-3 { top: 76%; left: 72%; }
 .star-node-4 { top: 62%; left: 50%; }
@@ -547,9 +600,11 @@ img {
   z-index: 70;
 }
 
+/* Updated star node flare button to use image background */
 .star-node-flare-btn {
   width: 88px;
   height: 88px;
+  position: relative;
   background-image: url('../images/button.png');
   background-size: contain;
   background-repeat: no-repeat;
@@ -563,6 +618,24 @@ img {
   transition: transform 0.4s var(--ease-spring), filter 0.3s ease;
   filter: drop-shadow(0 0 16px rgba(161, 172, 240, 0.8));
   animation: flareBreathe 5s infinite ease-in-out;
+}
+
+/* Remove decorative before content */
+.star-node-flare-btn::before { content: none; }
+
+@media (max-width: 768px) {
+  /* Scale star button for mobile */
+  .star-node-flare-btn {
+    width: 60px;
+    height: 60px;
+    background-size: contain;
+  }
+  /* Reduce fluid canvas bleed on small screens */
+  .fluid-edge-canvas {
+    inset: -12px;
+    width: calc(100% + 24px);
+    height: calc(100% + 24px);
+  }
 }
 
 @keyframes flareBreathe {
@@ -619,7 +692,7 @@ img {
   border-color: #fff;
 }
 
-/* Hover Project Preview Card (Organic Moving Cloud emerging from Star Button) */
+/* Hover project preview card */
 .node-preview-card {
   position: absolute;
   bottom: 92px;
@@ -627,12 +700,16 @@ img {
   transform-origin: 50% 100%; /* Emerges outward from star button */
   transform: translateX(-50%) scale(0.1) translateY(40px);
   width: 320px;
-  background: radial-gradient(circle at 45% 35%, rgba(24, 30, 62, 0.96) 0%, rgba(8, 11, 26, 0.98) 100%);
+  background:
+    linear-gradient(135deg, rgba(13, 18, 42, 0.98), rgba(7, 10, 25, 0.99)) padding-box,
+    radial-gradient(ellipse at 15% 20%, #2ba7ff 0%, #1455c6 28%, transparent 52%) border-box,
+    radial-gradient(ellipse at 85% 80%, #7edbff 0%, #2444bd 30%, transparent 56%) border-box;
+  background-size: 100% 100%, 220% 220%, 220% 220%;
   backdrop-filter: blur(28px);
   -webkit-backdrop-filter: blur(28px);
-  border: 1.5px solid rgba(161, 172, 240, 0.38);
-  border-radius: 64% 36% 56% 44% / 46% 58% 42% 54%;
-  animation: cloudMorph 10s ease-in-out infinite alternate;
+  border: 2px solid transparent;
+  border-radius: 2px;
+  animation: none;
   padding: 1.6rem 1.4rem;
   box-shadow: 0 25px 65px rgba(0, 0, 0, 0.85), 0 0 35px rgba(120, 133, 204, 0.3), inset 0 0 25px rgba(255, 255, 255, 0.05);
   opacity: 0;
@@ -658,7 +735,7 @@ img {
 .preview-thumb {
   width: 100%;
   height: 160px;
-  border-radius: 28% 22% 28% 22% / 22% 28% 22% 28%;
+  border-radius: 0;
   overflow: hidden;
   position: relative;
   background: #060913;
@@ -830,6 +907,65 @@ img {
   opacity: 1;
 }
 
+/* Fluid-glass button adapted for this static portfolio from the supplied
+   Framer reference, so it needs no external scripts to work. */
+.btn-fluid-glass {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0.9rem 1.45rem;
+  overflow: hidden;
+  border: 1px solid rgba(204, 239, 255, 0.58);
+  border-radius: 999px;
+  background: rgba(122, 193, 255, 0.13);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.55), inset 0 -10px 20px rgba(21, 70, 190, 0.18), 0 12px 30px rgba(0, 40, 118, 0.24);
+  backdrop-filter: blur(14px) saturate(1.45);
+  -webkit-backdrop-filter: blur(14px) saturate(1.45);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+  isolation: isolate;
+  transition: transform 0.3s var(--ease-spring), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-fluid-glass::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  width: 180%;
+  aspect-ratio: 1;
+  border-radius: 42% 58% 55% 45% / 43% 47% 53% 57%;
+  background: radial-gradient(circle at 40% 38%, rgba(255, 255, 255, 0.88) 0 3%, rgba(93, 198, 255, 0.63) 21%, rgba(55, 77, 233, 0.16) 56%, transparent 71%);
+  filter: blur(3px);
+  animation: fluidButtonSurface 6s ease-in-out infinite;
+}
+
+.btn-fluid-glass::after {
+  content: '';
+  position: absolute;
+  inset: 1px 12% auto;
+  height: 35%;
+  border-radius: 50%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.38), transparent);
+  pointer-events: none;
+}
+
+.btn-fluid-glass span { position: relative; z-index: 1; }
+
+.btn-fluid-glass:hover {
+  transform: translateY(-3px) scale(1.02);
+  border-color: #fff;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.75), inset 0 -10px 20px rgba(21, 70, 190, 0.24), 0 18px 38px rgba(27, 115, 255, 0.38);
+}
+
+@keyframes fluidButtonSurface {
+  0%, 100% { transform: translate(-26%, -35%) rotate(0deg) scale(0.95); }
+  50% { transform: translate(-3%, 5%) rotate(22deg) scale(1.13); }
+}
+
 .btn-editorial-outline {
   display: inline-flex;
   align-items: center;
@@ -891,8 +1027,8 @@ img {
   line-height: 1.45;
   color: var(--color-light);
   margin-bottom: 1.5rem;
-  border-left: 3px solid var(--color-lavender);
-  padding-left: 1.5rem;
+  border-left: none;
+  padding-left: 0;
 }
 
 .case-specs-list {
@@ -955,7 +1091,7 @@ img {
   height: auto;
   max-height: 680px;
   object-fit: contain;
-  border-radius: 14px;
+  border-radius: 0;
   filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.65));
   transition: transform 0.5s var(--ease-spring), filter 0.4s ease;
 }
@@ -970,7 +1106,7 @@ img {
   height: auto;
   max-height: 520px;
   object-fit: contain;
-  border-radius: 14px;
+  border-radius: 0;
   filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.65));
   transition: transform 0.5s var(--ease-spring), filter 0.4s ease;
 }
@@ -1013,20 +1149,23 @@ img {
 }
 
 .upcoming-card {
-  background: rgba(14, 18, 36, 0.5);
-  border: 1px dashed var(--border-solid);
-  border-radius: 20px;
+  background:
+    linear-gradient(135deg, rgba(14, 18, 36, 0.94), rgba(7, 10, 25, 0.97)) padding-box,
+    radial-gradient(ellipse at 15% 20%, #2ba7ff 0%, #1455c6 28%, transparent 52%) border-box,
+    radial-gradient(ellipse at 85% 80%, #7edbff 0%, #2444bd 30%, transparent 56%) border-box;
+  background-size: 100% 100%, 220% 220%, 220% 220%;
+  border: 2px solid transparent;
+  border-radius: 2px;
   padding: 2.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   min-height: 280px;
   transition: var(--transition-smooth);
+  animation: liquidFrameFlow 8s ease-in-out infinite;
 }
 
 .upcoming-card:hover {
-  border-color: var(--color-lavender);
-  background: rgba(14, 18, 36, 0.75);
   transform: translateY(-4px);
 }
 
@@ -1053,12 +1192,16 @@ img {
 
 .about-portrait-card {
   position: relative;
-  border-radius: 56% 44% 62% 38% / 46% 56% 44% 54%;
+  border-radius: 2px;
   overflow: hidden;
-  border: 1.5px solid rgba(161, 172, 240, 0.35);
-  background: var(--bg-surface);
+  border: 2px solid transparent;
+  background:
+    linear-gradient(var(--bg-surface), var(--bg-surface)) padding-box,
+    radial-gradient(ellipse at 15% 20%, #2ba7ff 0%, #1455c6 28%, transparent 52%) border-box,
+    radial-gradient(ellipse at 85% 80%, #7edbff 0%, #2444bd 30%, transparent 56%) border-box;
+  background-size: 100% 100%, 220% 220%, 220% 220%;
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.7), 0 0 40px rgba(120, 133, 204, 0.22);
-  animation: cloudMorph 13s ease-in-out infinite alternate, cloudFloat 7s ease-in-out infinite;
+  animation: liquidFrameFlow 9s ease-in-out infinite;
   transition: transform 0.6s var(--ease-spring), border-color 0.3s ease, box-shadow 0.4s ease;
 }
 
@@ -1071,7 +1214,6 @@ img {
 }
 
 .about-portrait-card:hover {
-  border-color: var(--color-lavender);
   box-shadow: 0 35px 85px rgba(0, 0, 0, 0.8), 0 0 50px rgba(161, 172, 240, 0.38);
 }
 
@@ -1084,23 +1226,26 @@ img {
 }
 
 .asymmetric-guide-box {
-  background: radial-gradient(circle at 45% 30%, rgba(22, 28, 58, 0.75) 0%, rgba(10, 14, 30, 0.88) 100%);
+  background:
+    linear-gradient(135deg, rgba(22, 28, 58, 0.94), rgba(10, 14, 30, 0.98)) padding-box,
+    radial-gradient(ellipse at 15% 20%, #2ba7ff 0%, #1455c6 28%, transparent 52%) border-box,
+    radial-gradient(ellipse at 85% 80%, #7edbff 0%, #2444bd 30%, transparent 56%) border-box;
+  background-size: 100% 100%, 220% 220%, 220% 220%;
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1.5px solid rgba(161, 172, 240, 0.3);
-  border-radius: 58% 42% 55% 45% / 46% 54% 46% 54%;
+  border: 2px solid transparent;
+  border-radius: 2px;
   padding: 2.4rem;
   display: flex;
   flex-direction: column;
   gap: 1.4rem;
   position: relative;
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 35px rgba(120, 133, 204, 0.15), inset 0 0 25px rgba(255, 255, 255, 0.04);
-  animation: cloudMorph 14s ease-in-out infinite alternate, cloudFloat 8s ease-in-out infinite;
+  animation: liquidFrameFlow 8s ease-in-out infinite;
   transition: border-color 0.3s ease, box-shadow 0.4s ease;
 }
 
 .asymmetric-guide-box:hover {
-  border-color: var(--color-lavender);
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.75), 0 0 45px rgba(161, 172, 240, 0.3);
 }
 
@@ -1109,6 +1254,10 @@ img {
   grid-template-columns: 1.15fr 0.85fr;
   gap: 4.5rem;
   align-items: flex-start;
+}
+
+.contact-asymmetric-layout.contact-info-only {
+  grid-template-columns: minmax(0, 760px);
 }
 
 .editorial-form {
@@ -1333,6 +1482,20 @@ img {
   transform: scale(1.15) rotate(-5deg);
 }
 
+/* Kept late in the stylesheet so these flowing-frame settings take precedence
+   over each panel's base card rules above. */
+@supports (-webkit-mask-composite: xor) {
+  .node-preview-card,
+  .upcoming-card,
+  .about-portrait-card,
+  .asymmetric-guide-box {
+    isolation: isolate;
+    border: 5px solid transparent;
+    background-clip: padding-box;
+    animation: none;
+  }
+}
+
 /* --- Responsive Layout --- */
 @media (max-width: 1024px) {
   .case-study-hero,
@@ -1382,3 +1545,8 @@ img {
     display: none;
   }
 }
+
+/* Tile fluid border */
+.tile { position: relative; overflow: hidden; }
+.tile .fluid-edge-canvas { pointer-events: none; position: absolute; inset: -24px; width: calc(100% + 48px); height: calc(100% + 48px); }
+.lightbox-img { border-radius: 0; }

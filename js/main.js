@@ -4,28 +4,8 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // --- 1. Cursor Ambient Follower ---
-  const cursorGlow = document.getElementById('cursor-glow');
-  if (cursorGlow && window.innerWidth > 768) {
-    let mouseX = window.innerWidth / 2;
-    let mouseY = window.innerHeight / 2;
-    let currentX = mouseX;
-    let currentY = mouseY;
-
-    window.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    });
-
-    const animateGlow = () => {
-      currentX += (mouseX - currentX) * 0.12;
-      currentY += (mouseY - currentY) * 0.12;
-      cursorGlow.style.left = `${currentX}px`;
-      cursorGlow.style.top = `${currentY}px`;
-      requestAnimationFrame(animateGlow);
-    };
-    animateGlow();
-  }
+  // Mouse particle trail disabled to improve performance
+  // (previous shooting-star trail code removed)
 
   // --- 2. Site Header Scrolled Class ---
   const header = document.querySelector('.site-header');
@@ -101,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const openLightbox = (src, caption) => {
     if (!lightboxModal || !lightboxImg) return;
     lightboxImg.src = src;
-    if (lightboxCaption) lightboxCaption.textContent = caption || '';
+    // caption removed per user request
     lightboxModal.classList.add('active');
     document.body.style.overflow = 'hidden';
   };
