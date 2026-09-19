@@ -300,7 +300,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const cx = width / 2;
         const cy = height / 2;
 
-        const orbitRadius = 78 + Math.sin(time * 0.85) * 22;
+        const baseOrbit = Math.min(width * 0.22, 105);
+        const orbitRadius = baseOrbit + Math.sin(time * 0.85) * 24;
         const orbitAngle = time * 0.75;
 
         const g1Center = {
@@ -314,7 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const g1Angle = time * 0.8;
         const g2Angle = -time * 0.9;
-        const collisionFactor = Math.max(0, (1 - (orbitRadius - 56) / 44));
+        const collisionFactor = Math.max(0, (1 - (orbitRadius - 58) / 48));
 
         [g1Center, g2Center].forEach((c, idx) => {
           const coreGrad = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, 45);
@@ -370,6 +371,182 @@ document.addEventListener('DOMContentLoaded', () => {
       isHovered = false;
       mousePos.active = false;
       lisaWrap.classList.remove('active-milkyway');
+    });
+  }
+
+  // --- 10. Human Motion Trail Cursor (Single Isolated Skeletal Vector Line Per Spawn) ---
+  const initHumanMotionTrail = () => {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if ('ontouchstart' in window && window.innerWidth < 768) return;
+
+    let canvas = document.getElementById('human-motion-canvas');
+    if (!canvas) {
+      canvas = document.createElement('canvas');
+      canvas.id = 'human-motion-canvas';
+      document.body.appendChild(canvas);
+    }
+
+    const ctx = canvas.getContext('2d');
+    let dpr = window.devicePixelRatio || 1;
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+
+    const resize = () => {
+      dpr = window.devicePixelRatio || 1;
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    resize();
+    window.addEventListener('resize', resize);
+
+    // Vibrant pose estimation palette: Blue, Cyan, Green, Orange, Purple
+    const POSE_PALETTE = [
+      '#2e86de', // Vibrant Blue
+      '#00d2d3', // Radiant Cyan
+      '#10ac84', // Mint / Emerald Green
+      '#ff9f43', // Warm Amber / Orange
+      '#9b59b6'  // Amethyst / Violet Purple
+    ];
+
+    const lines = [];
+    let lastSpawn = { x: -500, y: -500 };
+    let animId = null;
+    let lastTime = performance.now();
+
+    const spawnLine = (x, y, vx, vy) => {
+      const color = POSE_PALETTE[Math.floor(Math.random() * POSE_PALETTE.length)];
+      // Random angle simulating isolated pose vector orientation
+      const angle = Math.random() * Math.PI * 2;
+      // Random length for the skeletal segment
+      const length = 26 + Math.random() * 26;
+
+      const halfLen = length * 0.5;
+      const cosA = Math.cos(angle);
+      const sinA = Math.sin(angle);
+
+      const p1 = {
+        x: x - cosA * halfLen,
+        y: y - sinA * halfLen
+      };
+      const p2 = {
+        x: x + cosA * halfLen,
+        y: y + sinA * halfLen
+      };
+
+      lines.push({
+        p1,
+        p2,
+        color,
+        alpha: 1.0,
+        decayRate: 0.95 + Math.random() * 0.25 // Smooth natural fade-out over ~1.0s
+      });
+    };
+
+    const renderLoop = (now) => {
+      const dt = Math.min((now - lastTime) / 1000, 0.08);
+      lastTime = now;
+
+      ctx.clearRect(0, 0, width, height);
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      // Decay and draw each single line segment with its two joint dots
+      for (let i = lines.length - 1; i >= 0; i--) {
+        const line = lines[i];
+        line.alpha -= dt * line.decayRate;
+
+        if (line.alpha <= 0.01) {
+          lines.splice(i, 1);
+          continue;
+        }
+
+        const a = Math.max(0, line.alpha);
+
+        // 1. Single skeletal line segment
+        ctx.strokeStyle = line.color;
+        ctx.globalAlpha = a * 0.9;
+        ctx.lineWidth = Math.max(1.3, 2.8 * a);
+        ctx.beginPath();
+        ctx.moveTo(line.p1.x, line.p1.y);
+        ctx.lineTo(line.p2.x, line.p2.y);
+        ctx.stroke();
+
+        // 2. Two endpoint joint dots
+        [line.p1, line.p2].forEach(pt => {
+          ctx.globalAlpha = a * 0.95;
+          ctx.fillStyle = line.color;
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, Math.max(1.5, 3.4 * a), 0, Math.PI * 2);
+          ctx.fill();
+
+          // Luminous white joint center
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, Math.max(0.8, 1.4 * a), 0, Math.PI * 2);
+          ctx.fill();
+        });
+      }
+
+      ctx.globalAlpha = 1;
+
+      if (lines.length > 0) {
+        animId = requestAnimationFrame(renderLoop);
+      } else {
+        animId = null;
+      }
+    };
+
+    const wakeUp = () => {
+      if (!animId) {
+        lastTime = performance.now();
+        animId = requestAnimationFrame(renderLoop);
+      }
+    };
+
+    window.addEventListener('mousemove', (e) => {
+      const dist = Math.hypot(e.clientX - lastSpawn.x, e.clientY - lastSpawn.y);
+
+      // Spawn exactly one single line segment per distance step (~16px)
+      if (dist >= 16) {
+        const vx = e.clientX - lastSpawn.x;
+        const vy = e.clientY - lastSpawn.y;
+        spawnLine(e.clientX, e.clientY, vx, vy);
+        lastSpawn.x = e.clientX;
+        lastSpawn.y = e.clientY;
+        wakeUp();
+      }
+    });
+
+    window.addEventListener('mouseleave', () => {
+      lastSpawn.x = -500;
+      lastSpawn.y = -500;
+    });
+  };
+
+  initHumanMotionTrail();
+
+  // --- 11. Fluid Scroll Reveal (Athletic & Graceful Choreography) ---
+  const revealElements = document.querySelectorAll(
+    '.project-case-study, .about-asymmetric-layout, .upcoming-projects-grid, .asymmetric-guide-box, .editorial-bottom-quote, .reveal-motion'
+  );
+  if ('IntersectionObserver' in window && revealElements.length > 0) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    revealElements.forEach(el => {
+      if (!el.classList.contains('reveal-motion')) {
+        el.classList.add('reveal-motion');
+      }
+      observer.observe(el);
     });
   }
 });

@@ -92,10 +92,10 @@ h1, h2, h3, h4, .title-meta {
 }
 
 .editorial-hero-title {
-  font-size: clamp(3.2rem, 8.5vw, 7.8rem);
+  font-size: clamp(2.4rem, 4.6vw, 4.2rem);
   font-weight: 800;
-  line-height: 0.95;
-  letter-spacing: -0.04em;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
   text-transform: uppercase;
 }
 
@@ -109,7 +109,8 @@ h1, h2, h3, h4, .title-meta {
   color: var(--color-lavender);
 }
 
-/* --- Interactive Stardust Colliding Milky Ways on "Lisa" --- */
+/* --- Interactive Stardust Colliding Milky Ways on "experience" --- */
+.milky-way-hover,
 .lisa-galaxy-wrap {
   position: relative;
   display: inline-block;
@@ -126,6 +127,7 @@ h1, h2, h3, h4, .title-meta {
   z-index: 2;
 }
 
+.milky-way-hover:hover .lisa-text,
 .lisa-galaxy-wrap:hover .lisa-text,
 .lisa-galaxy-wrap.active-milkyway .lisa-text {
   opacity: 0.15;
@@ -146,6 +148,7 @@ h1, h2, h3, h4, .title-meta {
   transition: opacity 0.35s ease;
 }
 
+.milky-way-hover:hover .lisa-canvas,
 .lisa-galaxy-wrap:hover .lisa-canvas,
 .lisa-galaxy-wrap.active-milkyway .lisa-canvas {
   opacity: 1;
@@ -560,10 +563,10 @@ img {
 }
 
 /* Placed across the Milky Way spiral with ample clearance */
-.star-node-1 { top: 22%; left: 70%; }
-.star-node-2 { top: 48%; left: 88%; }
-.star-node-3 { top: 76%; left: 72%; }
-.star-node-4 { top: 62%; left: 50%; }
+.star-node-1 { top: 22%; left: 74%; }
+.star-node-2 { top: 48%; left: 89%; }
+.star-node-3 { top: 78%; left: 74%; }
+.star-node-4 { top: 65%; left: 56%; }
 
 /* Node 1 is in the upper area, so open its preview card downward to avoid hitting top bar */
 .star-node-1 .node-preview-card {
@@ -1210,7 +1213,7 @@ img {
   height: 560px;
   object-fit: cover;
   filter: contrast(1.05);
-  transition: transform 0.6s var(--ease-spring);
+  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), filter 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .about-portrait-card:hover {
@@ -1218,6 +1221,7 @@ img {
 }
 
 .about-portrait-card:hover img {
+  filter: url(#water-turbulence) contrast(1.08);
   transform: scale(1.03);
 }
 
@@ -1506,10 +1510,10 @@ img {
     gap: 3rem;
   }
 
-  .star-node-1 { top: 22%; left: 70%; }
-  .star-node-2 { top: 44%; left: 82%; }
-  .star-node-3 { top: 70%; left: 68%; }
-  .star-node-4 { top: 54%; left: 45%; }
+  .star-node-1 { top: 20%; left: 74%; }
+  .star-node-2 { top: 44%; left: 86%; }
+  .star-node-3 { top: 74%; left: 72%; }
+  .star-node-4 { top: 62%; left: 54%; }
 }
 
 @media (max-width: 768px) {
@@ -1528,7 +1532,8 @@ img {
   }
 
   .editorial-hero-title {
-    font-size: 3.2rem;
+    font-size: clamp(2.1rem, 7.5vw, 2.9rem);
+    line-height: 1.15;
   }
 
   .node-preview-card {
@@ -1550,3 +1555,152 @@ img {
 .tile { position: relative; overflow: hidden; }
 .tile .fluid-edge-canvas { pointer-events: none; position: absolute; inset: -24px; width: calc(100% + 48px); height: calc(100% + 48px); }
 .lightbox-img { border-radius: 0; }
+
+/* ==========================================================================
+   DANCE & HUMAN MOTION THEME: VISUAL & THEMATIC ENHANCEMENTS
+   ========================================================================== */
+
+/* --- 1. Floaty Cards Effect (Enhanced Pronounced Floating Rhythm) --- */
+@keyframes floatyCardMotion {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-18px);
+  }
+}
+
+.upcoming-card,
+.asymmetric-guide-box,
+.about-portrait-card,
+.media-poster-box,
+.media-can-box {
+  animation: floatyCardMotion 4.8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  will-change: transform;
+}
+
+/* Staggered natural animation delays across sequential cards */
+.upcoming-projects-grid > :nth-child(1),
+.contact-asymmetric-layout > div > :nth-child(1),
+.case-study-hero > :nth-child(1),
+.aether-unified-gallery > :nth-child(1) {
+  animation-delay: 0s;
+}
+
+.upcoming-projects-grid > :nth-child(2),
+.contact-asymmetric-layout > div > :nth-child(2),
+.case-study-hero > :nth-child(2),
+.aether-unified-gallery > :nth-child(2) {
+  animation-delay: 1.2s;
+}
+
+.upcoming-projects-grid > :nth-child(3),
+.contact-asymmetric-layout > div > :nth-child(3),
+.case-study-hero > :nth-child(3) {
+  animation-delay: 2.4s;
+}
+
+.about-asymmetric-layout > :nth-child(1) .about-portrait-card {
+  animation-delay: 0.7s;
+}
+
+/* Gracefully stabilize on hover for smooth interaction */
+.upcoming-card:hover,
+.asymmetric-guide-box:hover,
+.about-portrait-card:hover,
+.media-poster-box:hover,
+.media-can-box:hover {
+  animation-play-state: paused;
+}
+
+/* --- 2. Fluid Transitions & Motion Paths --- */
+:root {
+  --motion-ease: cubic-bezier(0.25, 1, 0.5, 1);
+  --motion-duration: 0.8s;
+}
+
+.btn-fluid-glass,
+.btn-editorial-outline,
+.btn-editorial-flare,
+.nav-link,
+.star-node {
+  transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+.reveal-motion {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+              transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-motion.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- 3. Chronophotography / Ghosting Effect on Project Visuals --- */
+.media-poster-box,
+.media-can-box,
+.preview-thumb,
+.upcoming-card {
+  position: relative;
+}
+
+.media-poster-box::before,
+.media-poster-box::after,
+.media-can-box::before,
+.media-can-box::after,
+.preview-thumb::before,
+.preview-thumb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 2;
+  transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.media-poster-box::before,
+.media-can-box::before,
+.preview-thumb::before {
+  background: radial-gradient(circle at 35% 35%, rgba(80, 227, 194, 0.22), transparent 70%);
+  border: 1px solid rgba(80, 227, 194, 0.35);
+  mix-blend-mode: screen;
+}
+
+.media-poster-box::after,
+.media-can-box::after,
+.preview-thumb::after {
+  background: radial-gradient(circle at 65% 65%, rgba(192, 132, 252, 0.2), transparent 70%);
+  border: 1px solid rgba(192, 132, 252, 0.28);
+  mix-blend-mode: screen;
+}
+
+.media-poster-box:hover::before,
+.media-can-box:hover::before,
+.preview-thumb:hover::before {
+  opacity: 0.75;
+  transform: translate(-9px, -5px) scale(0.985);
+}
+
+.media-poster-box:hover::after,
+.media-can-box:hover::after,
+.preview-thumb:hover::after {
+  opacity: 0.45;
+  transform: translate(-18px, -10px) scale(0.97);
+}
+
+/* --- 4. Human Motion Skeleton Trail Canvas --- */
+#human-motion-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+}
+
