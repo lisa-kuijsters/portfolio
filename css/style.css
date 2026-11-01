@@ -567,9 +567,11 @@ img {
 .star-node-2 { top: 48%; left: 89%; }
 .star-node-3 { top: 78%; left: 74%; }
 .star-node-4 { top: 65%; left: 56%; }
+.star-node-5 { top: 38%; left: 63%; }
 
 /* Node 1 is in the upper area, so open its preview card downward to avoid hitting top bar */
-.star-node-1 .node-preview-card {
+.star-node-1 .node-preview-card,
+.star-node-5 .node-preview-card {
   bottom: auto;
   top: 92px;
   transform-origin: 50% 0%; /* Emerges downward from star button */
@@ -578,7 +580,10 @@ img {
 
 .star-node-1:hover .node-preview-card,
 .star-node-1.active-preview .node-preview-card,
-.star-node-1 .node-preview-card:hover {
+.star-node-1 .node-preview-card:hover,
+.star-node-5:hover .node-preview-card,
+.star-node-5.active-preview .node-preview-card,
+.star-node-5 .node-preview-card:hover {
   transform: translateX(-50%) scale(1) translateY(0);
 }
 
@@ -1119,6 +1124,89 @@ img {
   filter: drop-shadow(0 20px 45px rgba(80, 227, 194, 0.25));
 }
 
+/* --- Additional Project Media Showcases --- */
+.project-gallery-grid {
+  display: grid;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.gallery-grid-4 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.gallery-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+  align-items: start;
+}
+
+.stimshower-gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+.media-showcase-box {
+  position: relative;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: visible;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.4s var(--ease-spring);
+}
+
+.media-showcase-box:hover {
+  transform: translateY(-5px);
+}
+
+.media-showcase-box img {
+  width: 100%;
+  height: auto;
+  max-height: 600px;
+  object-fit: contain;
+  border-radius: 4px;
+  filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.65));
+  transition: transform 0.5s var(--ease-spring), filter 0.4s ease;
+}
+
+.media-showcase-box:hover img {
+  transform: scale(1.02);
+  filter: drop-shadow(0 20px 45px rgba(161, 172, 240, 0.25));
+}
+
+.media-video-box {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.65);
+  border: 1px solid var(--border-hairline);
+  background: #000;
+  transition: transform 0.4s var(--ease-spring), box-shadow 0.4s ease;
+}
+
+.media-video-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 45px rgba(161, 172, 240, 0.25);
+}
+
+.media-video-box video {
+  width: 100%;
+  height: auto;
+  max-height: 580px;
+  display: block;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
 .media-caption-bar {
   padding: 1.4rem;
   background: rgba(10, 13, 26, 0.95);
@@ -1504,6 +1592,10 @@ img {
 @media (max-width: 1024px) {
   .case-study-hero,
   .aether-unified-gallery,
+  .project-gallery-grid,
+  .gallery-grid-4,
+  .gallery-grid-3,
+  .stimshower-gallery,
   .about-asymmetric-layout,
   .contact-asymmetric-layout {
     grid-template-columns: 1fr;
@@ -1514,6 +1606,7 @@ img {
   .star-node-2 { top: 44%; left: 86%; }
   .star-node-3 { top: 74%; left: 72%; }
   .star-node-4 { top: 62%; left: 54%; }
+  .star-node-5 { top: 35%; left: 62%; }
 }
 
 @media (max-width: 768px) {
@@ -1542,8 +1635,9 @@ img {
   }
 
   .media-poster-box img,
-  .media-can-box img {
-    height: 380px;
+  .media-can-box img,
+  .media-showcase-box img {
+    max-height: 380px;
   }
 
   #cursor-glow {
@@ -1574,7 +1668,9 @@ img {
 .asymmetric-guide-box,
 .about-portrait-card,
 .media-poster-box,
-.media-can-box {
+.media-can-box,
+.media-showcase-box,
+.media-video-box {
   animation: floatyCardMotion 4.8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
   will-change: transform;
 }
@@ -1583,21 +1679,30 @@ img {
 .upcoming-projects-grid > :nth-child(1),
 .contact-asymmetric-layout > div > :nth-child(1),
 .case-study-hero > :nth-child(1),
-.aether-unified-gallery > :nth-child(1) {
+.aether-unified-gallery > :nth-child(1),
+.project-gallery-grid > :nth-child(1),
+.stimshower-gallery > :nth-child(1) {
   animation-delay: 0s;
 }
 
 .upcoming-projects-grid > :nth-child(2),
 .contact-asymmetric-layout > div > :nth-child(2),
 .case-study-hero > :nth-child(2),
-.aether-unified-gallery > :nth-child(2) {
+.aether-unified-gallery > :nth-child(2),
+.project-gallery-grid > :nth-child(2),
+.stimshower-gallery > :nth-child(2) {
   animation-delay: 1.2s;
 }
 
 .upcoming-projects-grid > :nth-child(3),
 .contact-asymmetric-layout > div > :nth-child(3),
-.case-study-hero > :nth-child(3) {
+.case-study-hero > :nth-child(3),
+.project-gallery-grid > :nth-child(3) {
   animation-delay: 2.4s;
+}
+
+.project-gallery-grid > :nth-child(4) {
+  animation-delay: 0.6s;
 }
 
 .about-asymmetric-layout > :nth-child(1) .about-portrait-card {
@@ -1609,7 +1714,9 @@ img {
 .asymmetric-guide-box:hover,
 .about-portrait-card:hover,
 .media-poster-box:hover,
-.media-can-box:hover {
+.media-can-box:hover,
+.media-showcase-box:hover,
+.media-video-box:hover {
   animation-play-state: paused;
 }
 
@@ -1643,6 +1750,7 @@ img {
 /* --- 3. Chronophotography / Ghosting Effect on Project Visuals --- */
 .media-poster-box,
 .media-can-box,
+.media-showcase-box,
 .preview-thumb,
 .upcoming-card {
   position: relative;
@@ -1652,6 +1760,8 @@ img {
 .media-poster-box::after,
 .media-can-box::before,
 .media-can-box::after,
+.media-showcase-box::before,
+.media-showcase-box::after,
 .preview-thumb::before,
 .preview-thumb::after {
   content: '';
@@ -1666,6 +1776,7 @@ img {
 
 .media-poster-box::before,
 .media-can-box::before,
+.media-showcase-box::before,
 .preview-thumb::before {
   background: radial-gradient(circle at 35% 35%, rgba(80, 227, 194, 0.22), transparent 70%);
   border: 1px solid rgba(80, 227, 194, 0.35);
@@ -1674,6 +1785,7 @@ img {
 
 .media-poster-box::after,
 .media-can-box::after,
+.media-showcase-box::after,
 .preview-thumb::after {
   background: radial-gradient(circle at 65% 65%, rgba(192, 132, 252, 0.2), transparent 70%);
   border: 1px solid rgba(192, 132, 252, 0.28);
@@ -1682,6 +1794,7 @@ img {
 
 .media-poster-box:hover::before,
 .media-can-box:hover::before,
+.media-showcase-box:hover::before,
 .preview-thumb:hover::before {
   opacity: 0.75;
   transform: translate(-9px, -5px) scale(0.985);
@@ -1689,6 +1802,7 @@ img {
 
 .media-poster-box:hover::after,
 .media-can-box:hover::after,
+.media-showcase-box:hover::after,
 .preview-thumb:hover::after {
   opacity: 0.45;
   transform: translate(-18px, -10px) scale(0.97);
